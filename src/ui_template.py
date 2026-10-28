@@ -916,7 +916,7 @@ HTML_TEMPLATE = r"""
 
             <div class="nav-status">
                 <span class="status-dot"></span>
-                <span>Groq 70B • Qdrant Cloud • Cross-Encoder Re-Ranked</span>
+                <span>Groq 70B • Qdrant Cloud • Anti-Hallucination Critic</span>
             </div>
 
             <div class="nav-actions">
@@ -947,7 +947,7 @@ HTML_TEMPLATE = r"""
                         <div class="footer-left">
                             <span class="model-chip">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                                Cross-Encoder Re-ranked
+                                Anti-Hallucination Critic Active
                             </span>
                         </div>
                         <div class="footer-right">

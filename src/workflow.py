@@ -158,82 +158,89 @@ class RAGWorkflow:
           - {"type": "verification", "confidence": ..., "is_grounded": ..., "sources": [...]}
         """
         import json
-        logfire.info("rag_stream_workflow_start", query=query)
-        # 1. Domain Relevance Guardrail
-        yield json.dumps({"type": "status", "message": "Checking query domain relevance..."}) + "\n"
-        relevance = self.agents.check_query_relevance(query)
-        if not relevance.is_relevant:
-            refusal_msg = (
-                "I am a specialized AI Research Assistant focused exclusively on **Machine Learning, "
-                "Deep Learning, Statistics, LLMs, and System Design**.\n\n"
-                f"I cannot assist with queries outside these domains (*{relevance.reason}*).\n\n"
-                "**I can, however, help you with:**\n"
-                "- Large Language Model architectures, fine-tuning, and pre-training\n"
-                "- Designing data-intensive applications and distributed system architectures\n"
-                "- Mathematical statistics, probability theory, and ML derivations\n"
-                "- Production MLOps pipelines and technical interview preparation"
+        try:
+            logfire.info("rag_stream_workflow_start", query=query)
+            # 1. Domain Relevance Guardrail
+            yield json.dumps({"type": "status", "message": "Checking query domain relevance..."}) + "\n"
+            relevance = self.agents.check_query_relevance(query)
+            if not relevance.is_relevant:
+                refusal_msg = (
+                    "I am a specialized AI Research Assistant focused exclusively on **Machine Learning, "
+                    "Deep Learning, Statistics, LLMs, and System Design**.\n\n"
+                    f"I cannot assist with queries outside these domains (*{relevance.reason}*).\n\n"
+                    "**I can, however, help you with:**\n"
+                    "- Large Language Model architectures, fine-tuning, and pre-training\n"
+                    "- Designing data-intensive applications and distributed system architectures\n"
+                    "- Mathematical statistics, probability theory, and ML derivations\n"
+                    "- Production MLOps pipelines and technical interview preparation"
+                )
+                logfire.info("rag_stream_workflow_refusal", query=query, reason=relevance.reason)
+                yield json.dumps({"type": "refusal", "message": refusal_msg}) + "\n"
+                return
+
+            # 2. Retrieval
+            yield json.dumps({"type": "status", "message": "Searching Qdrant Cloud knowledge base..."}) + "\n"
+            retrieved_chunks = self.vector_store.search(query)
+            if not retrieved_chunks:
+                logfire.info("rag_stream_workflow_empty", query=query)
+                yield json.dumps({"type": "empty", "message": "No relevant documents found in the vector database to answer this question."}) + "\n"
+                return
+
+            # 3. Stream Synthesis
+            yield json.dumps({"type": "status", "message": "Synthesizing answer..."}) + "\n"
+            full_draft = []
+            for token in self.agents.stream_synthesize_answer(query, retrieved_chunks):
+                full_draft.append(token)
+                yield json.dumps({"type": "token", "token": token}) + "\n"
+
+            draft_answer = "".join(full_draft)
+
+            # 4. Critic Fact-Checking
+            yield json.dumps({"type": "status", "message": "Critic verifying claims and computing confidence..."}) + "\n"
+            verification: VerificationResult = self.agents.verify_and_critique(
+                query=query,
+                context_chunks=retrieved_chunks,
+                draft_answer=draft_answer
             )
-            logfire.info("rag_stream_workflow_refusal", query=query, reason=relevance.reason)
-            yield json.dumps({"type": "refusal", "message": refusal_msg}) + "\n"
-            return
 
-        # 2. Retrieval & Re-ranking
-        yield json.dumps({"type": "status", "message": "Searching Qdrant & re-ranking with Cross-Encoder..."}) + "\n"
-        retrieved_chunks = self.vector_store.search(query)
-        if not retrieved_chunks:
-            logfire.info("rag_stream_workflow_empty", query=query)
-            yield json.dumps({"type": "empty", "message": "No relevant documents found in the vector database to answer this question."}) + "\n"
-            return
+            # Only replace the streamed draft answer if confidence is too low (< 0.50)
+            if verification.confidence_score < 0.50:
+                yield json.dumps({"type": "replace_answer", "answer": verification.final_verified_answer}) + "\n"
 
-        # 3. Stream Synthesis
-        yield json.dumps({"type": "status", "message": "Synthesizing answer..."}) + "\n"
-        full_draft = []
-        for token in self.agents.stream_synthesize_answer(query, retrieved_chunks):
-            full_draft.append(token)
-            yield json.dumps({"type": "token", "token": token}) + "\n"
+            # Collect unique sources
+            unique_sources = []
+            seen = set()
+            for c in retrieved_chunks:
+                key = (c.get("source"), c.get("page"))
+                if key not in seen:
+                    seen.add(key)
+                    unique_sources.append({
+                        "source": c.get("source"),
+                        "filename": c.get("filename"),
+                        "page": c.get("page"),
+                        "score": round(c.get("score", 0), 4)
+                    })
 
-        draft_answer = "".join(full_draft)
-
-        # 4. Critic Fact-Checking
-        yield json.dumps({"type": "status", "message": "Critic verifying claims and computing confidence..."}) + "\n"
-        verification: VerificationResult = self.agents.verify_and_critique(
-            query=query,
-            context_chunks=retrieved_chunks,
-            draft_answer=draft_answer
-        )
-
-        # Only replace the streamed draft answer if confidence is too low (< 0.50)
-        if verification.confidence_score < 0.50:
-            yield json.dumps({"type": "replace_answer", "answer": verification.final_verified_answer}) + "\n"
-
-        # Collect unique sources
-        unique_sources = []
-        seen = set()
-        for c in retrieved_chunks:
-            key = (c.get("source"), c.get("page"))
-            if key not in seen:
-                seen.add(key)
-                unique_sources.append({
-                    "source": c.get("source"),
-                    "filename": c.get("filename"),
-                    "page": c.get("page"),
-                    "score": round(c.get("score", 0), 4)
-                })
-
-        # Emit final verification event
-        logfire.info(
-            "rag_stream_workflow_complete",
-            query=query,
-            confidence=verification.confidence_score,
-            is_grounded=verification.is_grounded
-        )
-        yield json.dumps({
-            "type": "verification",
-            "confidence": round(verification.confidence_score * 100, 1),
-            "is_grounded": verification.is_grounded,
-            "reasoning": verification.reasoning,
-            "sources": unique_sources
-        }) + "\n"
+            # Emit final verification event
+            logfire.info(
+                "rag_stream_workflow_complete",
+                query=query,
+                confidence=verification.confidence_score,
+                is_grounded=verification.is_grounded
+            )
+            yield json.dumps({
+                "type": "verification",
+                "confidence": round(verification.confidence_score * 100, 1),
+                "is_grounded": verification.is_grounded,
+                "reasoning": verification.reasoning,
+                "sources": unique_sources
+            }) + "\n"
+        except Exception as e:
+            logfire.error("rag_stream_workflow_error", error=str(e))
+            yield json.dumps({
+                "type": "empty",
+                "message": f"Service temporarily busy ({str(e)}). Please try your query again."
+            }) + "\n"
 
     def close(self):
         self.vector_store.close()
