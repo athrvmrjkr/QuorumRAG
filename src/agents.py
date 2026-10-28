@@ -44,7 +44,18 @@ class RAGAgents:
         ollama_model: str = OLLAMA_MODEL
     ):
         self.api_key = api_key
-        self.model = model
+        # Enforce valid Groq models to prevent invalid placeholder crashes (e.g. gpt-oss-20b)
+        valid_models = {
+            "llama-3.3-70b-versatile",
+            "llama-3.1-70b-versatile",
+            "llama-3.1-8b-instant",
+            "mixtral-8x7b-32768",
+            "gemma2-9b-it"
+        }
+        if model not in valid_models and not str(model).startswith("llama-3"):
+            self.model = "llama-3.3-70b-versatile"
+        else:
+            self.model = model
         self.ollama_url = ollama_url
         self.ollama_model = ollama_model
         
@@ -56,7 +67,7 @@ class RAGAgents:
                 console.print(f"[yellow]Could not initialize Groq client: {e}[/yellow]")
 
     def _call_ollama(self, messages: List[Dict[str, str]], json_mode: bool = False) -> str:
-        """Fallback to local Ollama instance."""
+        """Fallback to local Ollama instance with strict timeout to prevent cloud hanging."""
         url = f"{self.ollama_url}/api/chat"
         payload = {
             "model": self.ollama_model,
@@ -67,15 +78,14 @@ class RAGAgents:
         if json_mode:
             payload["format"] = "json"
         
-        response = requests.post(url, json=payload, timeout=60)
+        response = requests.post(url, json=payload, timeout=3)
         response.raise_for_status()
         return response.json()["message"]["content"].strip()
 
     def _chat_completion(self, messages: List[Dict[str, str]], json_mode: bool = False) -> str:
         """
         Attempts generation via Groq API.
-        If Groq is offline, invalid key/model, or hits a rate limit,
-        automatically falls back to local Ollama!
+        Automatically retries with fallback Groq models if model error or rate limit occurs.
         """
         if self.groq_client:
             try:
@@ -103,14 +113,35 @@ class RAGAgents:
                         return resp.choices[0].message.content.strip()
                     except Exception:
                         pass
-                console.print(f"[yellow]Groq request failed ({e}). Falling back to local Ollama ({self.ollama_model})...[/yellow]")
 
-        # Fallback to Ollama
-        return self._call_ollama(messages, json_mode=json_mode)
+                # Automatic fallback to fast LLaMA 3.1 8B on Groq
+                try:
+                    fallback_kwargs = dict(kwargs)
+                    fallback_kwargs["model"] = "llama-3.1-8b-instant"
+                    resp = self.groq_client.chat.completions.create(**fallback_kwargs)
+                    return resp.choices[0].message.content.strip()
+                except Exception:
+                    pass
+
+                console.print(f"[yellow]Groq request failed ({e}). Checking local Ollama...[/yellow]")
+
+        # Fallback to Ollama if locally available
+        try:
+            return self._call_ollama(messages, json_mode=json_mode)
+        except Exception as ollama_err:
+            console.print(f"[red]Ollama fallback failed ({ollama_err}). Returning safe fallback.[/red]")
+            if json_mode:
+                return json.dumps({
+                    "is_relevant": True,
+                    "topic": "general",
+                    "reason": "Classifier fallback"
+                })
+            return "Service temporarily busy. Please try again."
 
     def _chat_completion_stream(self, messages: List[Dict[str, str]]):
         """
-        Streams completion tokens via Groq API or Ollama.
+        Streams completion tokens via Groq API.
+        Auto-retries with LLaMA 8B on Groq before yielding errors.
         """
         if self.groq_client:
             try:
@@ -127,9 +158,24 @@ class RAGAgents:
                         yield content
                 return
             except Exception as e:
-                console.print(f"[yellow]Groq stream failed ({e}). Falling back to local Ollama stream...[/yellow]")
+                console.print(f"[yellow]Groq stream failed ({e}). Falling back to LLaMA 8B instant...[/yellow]")
+                try:
+                    response = self.groq_client.chat.completions.create(
+                        model="llama-3.1-8b-instant",
+                        messages=messages,
+                        temperature=0.1,
+                        max_tokens=4096,
+                        stream=True
+                    )
+                    for chunk in response:
+                        content = chunk.choices[0].delta.content
+                        if content:
+                            yield content
+                    return
+                except Exception:
+                    pass
 
-        # Fallback to streaming via Ollama
+        # Fallback to streaming via Ollama if available
         try:
             url = f"{self.ollama_url}/api/chat"
             payload = {
@@ -138,7 +184,7 @@ class RAGAgents:
                 "stream": True,
                 "options": {"temperature": 0.1}
             }
-            res = requests.post(url, json=payload, stream=True, timeout=60)
+            res = requests.post(url, json=payload, stream=True, timeout=5)
             for line in res.iter_lines():
                 if line:
                     data = json.loads(line.decode('utf-8'))
@@ -147,7 +193,7 @@ class RAGAgents:
                         yield content
         except Exception as e:
             console.print(f"[red]Ollama stream failed ({e}).[/red]")
-            yield f"Error in streaming generation: {e}"
+            yield f"Unable to reach language model. Please verify your Groq API key and try again."
 
     def check_query_relevance(self, query: str) -> RelevanceCheckResult:
         """
