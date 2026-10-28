@@ -27,7 +27,6 @@ RUN useradd -m -u 1000 appuser && \
 
 # Copy application code
 COPY --chown=appuser:appuser src/ ./src/
-COPY --chown=appuser:appuser ARCHITECTURE_AND_INTERVIEW_GUIDE.md ./
 
 USER appuser
 
