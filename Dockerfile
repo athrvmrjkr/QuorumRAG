@@ -1,0 +1,41 @@
+# Production-Grade Container for Multi-Agent RAG Assistant
+# Compatible with Hugging Face Spaces (Docker), Cloud Run, Render, and Railway
+FROM python:3.11-slim
+
+# Prevent Python from writing .pyc files & enable real-time streaming logs
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=7860
+
+WORKDIR /app
+
+# Install minimal system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Create non-root user (Mandatory for Hugging Face Spaces & container security)
+RUN useradd -m -u 1000 appuser && \
+    mkdir -p /app/qdrant_storage /tmp/fastembed_cache && \
+    chown -R appuser:appuser /app /tmp/fastembed_cache
+
+# Copy application code
+COPY --chown=appuser:appuser src/ ./src/
+COPY --chown=appuser:appuser ARCHITECTURE_AND_INTERVIEW_GUIDE.md ./
+
+USER appuser
+
+EXPOSE 7860
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/ || exit 1
+
+# Launch ASGI server with streaming support
+CMD ["sh", "-c", "uvicorn src.app:app --host 0.0.0.0 --port ${PORT}"]

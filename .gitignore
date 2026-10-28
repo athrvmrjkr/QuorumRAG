@@ -1,0 +1,36 @@
+# Environment variables and secrets (CRITICAL: NEVER COMMIT)
+.env
+*.env
+.env.local
+
+# Virtual environments
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local vector database storage, raw PDFs & cache
+qdrant_storage/
+data/
+*.pdf
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs & temp files
+*.log
+scratch/
+.system_generated/
+tmp/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+
+# Internal guides, docs, and commands
+COMMANDS.txt
+*.md
+!README.md
