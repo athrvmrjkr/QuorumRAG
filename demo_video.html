@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quorum AI — Launch Video Studio</title>
+    <title>Quorum AI — 45s Product Launch Video Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #060709;
+            --bg-dark: #040508;
             --primary-cyan: #38bdf8;
             --primary-indigo: #818cf8;
             --accent-purple: #c084fc;
             --emerald-green: #10b981;
             --coral-red: #ef4444;
-            --card-glass: rgba(14, 16, 24, 0.85);
+            --card-glass: rgba(13, 16, 26, 0.88);
             --border-glass: rgba(255, 255, 255, 0.16);
         }
 
@@ -28,7 +28,7 @@
         }
 
         body {
-            background-color: #030406;
+            background-color: #020305;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -40,7 +40,7 @@
 
         .studio-container {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1140px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -52,11 +52,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            background: rgba(15, 17, 26, 0.7);
+            padding: 14px 24px;
+            background: rgba(15, 18, 28, 0.75);
             border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            backdrop-filter: blur(16px);
+            border-radius: 18px;
+            backdrop-filter: blur(20px);
         }
 
         .header-title {
@@ -75,13 +75,16 @@
         }
 
         .status-pill {
-            font-size: 0.82rem;
-            padding: 5px 12px;
+            font-size: 0.85rem;
+            padding: 6px 14px;
             border-radius: 9999px;
             background: rgba(56, 189, 248, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.35);
             color: var(--primary-cyan);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .viewport-wrapper {
@@ -89,10 +92,10 @@
             width: 100%;
             aspect-ratio: 16 / 9;
             background: #000;
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 50px rgba(56, 189, 248, 0.15);
         }
 
         canvas {
@@ -107,11 +110,11 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 16px;
-            padding: 16px 24px;
-            background: rgba(15, 17, 26, 0.85);
+            gap: 18px;
+            padding: 18px 26px;
+            background: rgba(14, 17, 28, 0.85);
             border: 1px solid var(--border-glass);
-            border-radius: 16px;
+            border-radius: 18px;
             backdrop-filter: blur(20px);
         }
 
@@ -125,9 +128,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 22px;
+            padding: 12px 24px;
             border-radius: 12px;
-            font-size: 0.92rem;
+            font-size: 0.94rem;
             font-weight: 600;
             cursor: pointer;
             border: none;
@@ -136,13 +139,13 @@
 
         .btn-primary {
             background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-            color: #040814;
-            box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4);
+            color: #030712;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.45);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(56, 189, 248, 0.6);
+            box-shadow: 0 6px 26px rgba(56, 189, 248, 0.65);
         }
 
         .btn-secondary {
@@ -165,7 +168,7 @@
         .progress-bar-wrap {
             flex: 1;
             min-width: 240px;
-            height: 8px;
+            height: 10px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 9999px;
             overflow: hidden;
@@ -175,16 +178,17 @@
         .progress-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-indigo), var(--accent-purple));
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc, #10b981);
             transition: width 0.05s linear;
         }
 
         .time-label {
             font-family: 'Fira Code', monospace;
-            font-size: 0.88rem;
+            font-size: 0.92rem;
             color: #94a3b8;
-            min-width: 65px;
+            min-width: 85px;
             text-align: right;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -193,14 +197,14 @@
 <div class="studio-container">
     <div class="header-bar">
         <div class="header-title">
-            <svg width="22" height="22" viewBox="0 0 32 32">
+            <svg width="24" height="24" viewBox="0 0 32 32">
                 <circle cx="16" cy="16" r="11" stroke="#38bdf8" stroke-width="2" stroke-dasharray="22 6" fill="none"/>
                 <circle cx="16" cy="16" r="6" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="10 5" fill="none"/>
                 <circle cx="16" cy="16" r="2.8" fill="#ffffff"/>
             </svg>
-            <span>Quorum AI — 100% Free Launch Video Studio</span>
+            <span>Quorum AI — 45s Product Launch Video Studio</span>
         </div>
-        <div class="status-pill" id="statusBadge">Ready to Export</div>
+        <div class="status-pill" id="statusBadge">Ready (45.0s Timeline)</div>
     </div>
 
     <div class="viewport-wrapper">
@@ -211,11 +215,11 @@
         <div class="action-group">
             <button class="btn btn-secondary" id="previewBtn" onclick="startPlayback(false)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span>Preview (20s)</span>
+                <span>Preview (45s)</span>
             </button>
             <button class="btn btn-primary" id="recordBtn" onclick="startPlayback(true)">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
-                <span>Record & Download MP4 / WebM</span>
+                <span>Record & Download 1080p Video</span>
             </button>
         </div>
 
@@ -223,7 +227,7 @@
             <div class="progress-fill" id="progressFill"></div>
         </div>
 
-        <div class="time-label" id="timeLabel">0.0s / 20.0s</div>
+        <div class="time-label" id="timeLabel">0.0s / 45.0s</div>
     </div>
 </div>
 
@@ -236,7 +240,7 @@
     const previewBtn = document.getElementById("previewBtn");
     const recordBtn = document.getElementById("recordBtn");
 
-    const TOTAL_DURATION = 20.0; // Seconds
+    const TOTAL_DURATION = 45.0; // 45 Seconds Master Length
     let startTime = null;
     let isPlaying = false;
     let isRecording = false;
@@ -245,7 +249,7 @@
     let audioCtx = null;
     let audioDest = null;
 
-    // --- Web Audio Synthesizer for Synchronized Music & SFX ---
+    // --- Modern Synthwave / Tech Web Audio Synthesizer ---
     function initAudio() {
         if (!audioCtx) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -272,378 +276,198 @@
         osc.stop(audioCtx.currentTime + duration);
     }
 
-    function playChord(chordFreqs, duration = 1.8, gainVal = 0.1) {
+    function playChord(chordFreqs, duration = 2.2, gainVal = 0.12) {
         chordFreqs.forEach(f => playTone(f, 'sine', duration, gainVal));
     }
 
     let lastSfxSec = -1;
     function triggerAudioCues(sec) {
-        const curSecInt = Math.floor(sec * 4);
-        if (curSecInt === lastSfxSec) return;
-        lastSfxSec = curSecInt;
+        const curStep = Math.floor(sec * 4); // 4 checks per second
+        if (curStep === lastSfxSec) return;
+        lastSfxSec = curStep;
 
-        // Sub bass drop on Scene 1 start
-        if (Math.abs(sec - 0.2) < 0.1) playTone(55, 'triangle', 1.2, 0.4);
-        // Glitch sweep
-        if (Math.abs(sec - 2.2) < 0.1) playTone(440, 'sawtooth', 0.25, 0.15);
-        // Scene 2 reveal chime
-        if (Math.abs(sec - 3.6) < 0.1) playChord([220, 277.18, 329.63, 440], 2.0, 0.18);
-        // Typing ticks in Scene 2 & 3
-        if (sec >= 4.2 && sec <= 6.8 && (curSecInt % 2 === 0)) playTone(1200 + Math.random() * 400, 'square', 0.04, 0.04);
-        // Scene 3 stream explosion
-        if (Math.abs(sec - 7.5) < 0.1) playChord([261.63, 329.63, 392, 523.25], 2.2, 0.2);
-        if (sec >= 7.8 && sec <= 11.5 && (curSecInt % 1 === 0)) playTone(800 + (sec * 60) % 600, 'sine', 0.06, 0.05);
-        // Scene 4 verification green chime
-        if (Math.abs(sec - 12.6) < 0.1) playChord([392, 493.88, 587.33, 783.99], 2.5, 0.25);
-        // Scene 5 climax swell
-        if (Math.abs(sec - 16.5) < 0.1) {
-            playChord([130.81, 196.00, 261.63, 392.00, 523.25], 3.5, 0.3);
-            playTone(45, 'triangle', 2.5, 0.45);
+        // Subtle ambient rhythm pulse every 1 second
+        if (curStep % 4 === 0 && sec > 0.5 && sec < 44) {
+            playTone(85, 'triangle', 0.12, 0.08); // soft rhythmic sub
+        }
+
+        // Scene 1: Problem hook & glitch hit
+        if (Math.abs(sec - 0.2) < 0.15) playTone(50, 'triangle', 1.8, 0.4);
+        if (Math.abs(sec - 3.8) < 0.15) playTone(350, 'sawtooth', 0.35, 0.2);
+
+        // Scene 2: Solution reveal
+        if (Math.abs(sec - 6.6) < 0.15) playChord([220, 277.18, 329.63, 440], 2.5, 0.2);
+        // Guardrail typing clicks
+        if (sec >= 7.8 && sec <= 10.2 && (curStep % 2 === 0)) playTone(1400 + Math.random() * 300, 'square', 0.03, 0.04);
+        // Guardrail refusal chime
+        if (Math.abs(sec - 11.2) < 0.15) playTone(587.33, 'sine', 0.6, 0.18);
+
+        // Scene 3: Dense search & Qdrant cluster
+        if (Math.abs(sec - 13.6) < 0.15) playChord([261.63, 329.63, 392, 523.25], 2.2, 0.2);
+        if (Math.abs(sec - 17.5) < 0.15) playTone(880, 'sine', 0.4, 0.15);
+
+        // Scene 4: LPU Stream Explosion
+        if (Math.abs(sec - 22.1) < 0.15) {
+            playChord([196.00, 246.94, 293.66, 392.00], 2.8, 0.25);
+            playTone(45, 'triangle', 2.0, 0.45);
+        }
+        // Rapid 340 tok/s sound
+        if (sec >= 23.5 && sec <= 29.5 && (curStep % 1 === 0)) {
+            playTone(700 + (sec * 120) % 800, 'sine', 0.04, 0.05);
+        }
+
+        // Scene 5: Critic verification chime
+        if (Math.abs(sec - 31.2) < 0.15) playChord([329.63, 415.30, 493.88, 659.25], 3.0, 0.3);
+        if (Math.abs(sec - 35.5) < 0.15) playChord([523.25, 659.25, 783.99, 1046.50], 2.5, 0.25);
+
+        // Scene 6: Grand Outro Swell
+        if (Math.abs(sec - 39.2) < 0.15) {
+            playChord([130.81, 196.00, 261.63, 329.63, 392.00], 4.5, 0.35);
+            playTone(40, 'triangle', 3.0, 0.5);
         }
     }
 
-    // --- Starfield & Ambient Particle Simulation ---
-    const stars = Array.from({ length: 90 }, () => ({
+    // --- Particle System & Ambient Glow ---
+    const particles = Array.from({ length: 110 }, () => ({
         x: Math.random() * 1920,
         y: Math.random() * 1080,
-        size: Math.random() * 2.2 + 0.5,
-        speed: Math.random() * 0.4 + 0.1,
+        radius: Math.random() * 2.4 + 0.6,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: -Math.random() * 0.5 - 0.1,
+        color: Math.random() > 0.5 ? '#38bdf8' : '#818cf8',
         opacity: Math.random() * 0.7 + 0.3
     }));
 
     function drawAmbientBackground(t) {
-        // Deep Obsidian Radial Glow
-        const bgGrad = ctx.createRadialGradient(960, 540, 100, 960, 540, 1100);
-        bgGrad.addColorStop(0, '#0d1322');
-        bgGrad.addColorStop(0.5, '#070a12');
-        bgGrad.addColorStop(1, '#030407');
-        ctx.fillStyle = bgGrad;
+        // Deep Obsidian Space Gradient
+        const bg = ctx.createRadialGradient(960, 540, 150, 960, 540, 1200);
+        bg.addColorStop(0, '#0c101c');
+        bg.addColorStop(0.5, '#05070d');
+        bg.addColorStop(1, '#020306');
+        ctx.fillStyle = bg;
         ctx.fillRect(0, 0, 1920, 1080);
 
-        // Moving background stars
-        stars.forEach(s => {
-            s.y -= s.speed;
-            if (s.y < 0) s.y = 1080;
-            ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity * (0.6 + 0.4 * Math.sin(t * 3 + s.x))})`;
+        // Subtle perspective grid
+        ctx.save();
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.035)';
+        ctx.lineWidth = 1;
+        const gridOffset = (t * 20) % 60;
+        for (let x = 0; x < 1920; x += 60) {
             ctx.beginPath();
-            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, 1080);
+            ctx.stroke();
+        }
+        for (let y = gridOffset; y < 1080; y += 60) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(1920, y);
+            ctx.stroke();
+        }
+        ctx.restore();
+
+        // Animated Nebula Swirl
+        const neb = ctx.createRadialGradient(
+            960 + Math.sin(t * 0.4) * 220,
+            420 + Math.cos(t * 0.3) * 160,
+            80,
+            960, 540, 800
+        );
+        neb.addColorStop(0, 'rgba(56, 189, 248, 0.14)');
+        neb.addColorStop(0.4, 'rgba(129, 140, 248, 0.08)');
+        neb.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = neb;
+        ctx.fillRect(0, 0, 1920, 1080);
+
+        // Particle Drift
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.y < 0) p.y = 1080;
+            if (p.x < 0) p.x = 1920;
+            if (p.x > 1920) p.x = 0;
+
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.opacity * (0.6 + 0.4 * Math.sin(t * 2 + p.x));
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             ctx.fill();
         });
-
-        // Ambient Nebula Wave
-        const nGrad = ctx.createRadialGradient(
-            960 + Math.sin(t * 0.5) * 200, 
-            400 + Math.cos(t * 0.4) * 150, 
-            50, 
-            960, 540, 700
-        );
-        nGrad.addColorStop(0, 'rgba(56, 189, 248, 0.12)');
-        nGrad.addColorStop(0.5, 'rgba(129, 140, 248, 0.06)');
-        nGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = nGrad;
-        ctx.fillRect(0, 0, 1920, 1080);
+        ctx.globalAlpha = 1.0;
     }
 
+    // --- Helper: macOS Window Chrome Wrapper ---
+    function drawMacWindow(x, y, w, h, title = "Quorum AI — Research Terminal") {
+        ctx.save();
+        // Glass Body
+        ctx.fillStyle = 'rgba(12, 15, 25, 0.88)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+        ctx.lineWidth = 1.5;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+        ctx.shadowBlur = 45;
+        roundRect(ctx, x, y, w, h, 20, true, true);
+        ctx.shadowBlur = 0;
+
+        // Window Title Bar
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+        roundRect(ctx, x, y, w, 44, 20, true, false);
+
+        // macOS Traffic Lights
+        ctx.fillStyle = '#ff5f56'; ctx.beginPath(); ctx.arc(x + 24, y + 22, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#ffbd2e'; ctx.beginPath(); ctx.arc(x + 44, y + 22, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#27c93f'; ctx.beginPath(); ctx.arc(x + 64, y + 22, 6, 0, Math.PI * 2); ctx.fill();
+
+        // Title
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '600 14px "Plus Jakarta Sans"';
+        ctx.textAlign = 'center';
+        ctx.fillText(title, x + w / 2, y + 27);
+        ctx.restore();
+    }
+
+    // --- Helper: Animated Quantum Orbital Emblem ---
     function drawQuantumLogo(cx, cy, radius, t) {
         ctx.save();
         ctx.translate(cx, cy);
 
         // Outer Ring
         ctx.save();
-        ctx.rotate(t * 0.8);
+        ctx.rotate(t * 0.7);
         ctx.strokeStyle = '#38bdf8';
         ctx.lineWidth = 4;
-        ctx.setLineDash([40, 18]);
+        ctx.setLineDash([42, 18]);
         ctx.shadowColor = '#38bdf8';
-        ctx.shadowBlur = 24;
+        ctx.shadowBlur = 28;
         ctx.beginPath();
         ctx.arc(0, 0, radius, 0, Math.PI * 2);
         ctx.stroke();
         ctx.restore();
 
-        // Inner Counter-Ring
+        // Inner Counter Ring
         ctx.save();
-        ctx.rotate(-t * 1.4);
+        ctx.rotate(-t * 1.3);
         ctx.strokeStyle = '#818cf8';
         ctx.lineWidth = 3;
-        ctx.setLineDash([25, 15]);
+        ctx.setLineDash([26, 14]);
         ctx.shadowColor = '#818cf8';
-        ctx.shadowBlur = 18;
+        ctx.shadowBlur = 20;
         ctx.beginPath();
         ctx.arc(0, 0, radius * 0.62, 0, Math.PI * 2);
         ctx.stroke();
         ctx.restore();
 
-        // Center Core
+        // Glowing Core
         ctx.fillStyle = '#ffffff';
         ctx.shadowColor = '#ffffff';
-        ctx.shadowBlur = 30;
+        ctx.shadowBlur = 32;
         ctx.beginPath();
-        ctx.arc(0, 0, radius * 0.24, 0, Math.PI * 2);
+        ctx.arc(0, 0, radius * 0.22, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.restore();
     }
 
-    // --- Main Scene Director ---
-    function renderFrame(sec) {
-        ctx.clearRect(0, 0, 1920, 1080);
-        drawAmbientBackground(sec);
-        triggerAudioCues(sec);
-
-        // ==========================================
-        // SCENE 1: THE PROBLEM (0.0s - 3.5s)
-        // ==========================================
-        if (sec >= 0 && sec < 3.5) {
-            const sceneT = sec;
-            const fadeIn = Math.min(1, sceneT * 2);
-            const fadeOut = Math.max(0, 1 - (sceneT - 2.8) * 2);
-            ctx.globalAlpha = fadeIn * fadeOut;
-
-            // Warning pill
-            ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
-            ctx.strokeStyle = 'rgba(239, 68, 68, 0.5)';
-            ctx.lineWidth = 2;
-            roundRect(ctx, 760, 360, 400, 48, 24, true, true);
-
-            ctx.fillStyle = '#f87171';
-            ctx.font = '700 18px "Plus Jakarta Sans"';
-            ctx.textAlign = 'center';
-            ctx.fillText('⚠ THE RAG PROBLEM', 960, 391);
-
-            // Bold Headline
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '800 64px "Plus Jakarta Sans"';
-            ctx.shadowColor = 'rgba(0,0,0,0.8)';
-            ctx.shadowBlur = 20;
-            ctx.fillText('Most RAG Systems Hallucinate', 960, 490);
-
-            // Subtitle
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = '500 32px "Plus Jakarta Sans"';
-            ctx.fillText('...with 100% false confidence.', 960, 555);
-
-            ctx.globalAlpha = 1.0;
-        }
-
-        // ==========================================
-        // SCENE 2: THE SOLUTION (3.5s - 7.5s)
-        // ==========================================
-        else if (sec >= 3.5 && sec < 7.5) {
-            const sceneT = sec - 3.5;
-            const fadeIn = Math.min(1, sceneT * 2);
-            const fadeOut = Math.max(0, 1 - (sceneT - 3.4) * 2);
-            ctx.globalAlpha = fadeIn * fadeOut;
-
-            // Logo spinning
-            drawQuantumLogo(960, 290, 65, sec);
-
-            // Title
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '800 62px "Plus Jakarta Sans"';
-            ctx.textAlign = 'center';
-            ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
-            ctx.shadowBlur = 35;
-            ctx.fillText('Meet Quorum AI', 960, 410);
-
-            // Subtitle
-            ctx.fillStyle = '#38bdf8';
-            ctx.font = '600 28px "Plus Jakarta Sans"';
-            ctx.shadowBlur = 15;
-            ctx.fillText('Self-Auditing Multi-Agent RAG Assistant', 960, 460);
-
-            // Mock Search Bar Input
-            ctx.fillStyle = 'rgba(15, 17, 26, 0.85)';
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
-            ctx.lineWidth = 2;
-            roundRect(ctx, 480, 530, 960, 80, 20, true, true);
-
-            // Simulated Typing Prompt
-            const fullPrompt = "Explain Self-Attention with exact mathematical formulas...";
-            const charsToShow = Math.min(fullPrompt.length, Math.floor((sceneT - 0.6) * 22));
-            const typedText = fullPrompt.substring(0, Math.max(0, charsToShow));
-
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '500 24px "Plus Jakarta Sans"';
-            ctx.textAlign = 'left';
-            ctx.fillText(typedText, 520, 578);
-
-            // Blinking cursor
-            if (Math.floor(sec * 3) % 2 === 0) {
-                const textWidth = ctx.measureText(typedText).width;
-                ctx.fillStyle = '#38bdf8';
-                ctx.fillRect(524 + textWidth, 555, 3, 30);
-            }
-
-            ctx.globalAlpha = 1.0;
-        }
-
-        // ==========================================
-        // SCENE 3: LPU SPEED & MATH (7.5s - 12.5s)
-        // ==========================================
-        else if (sec >= 7.5 && sec < 12.5) {
-            const sceneT = sec - 7.5;
-            const fadeIn = Math.min(1, sceneT * 2);
-            const fadeOut = Math.max(0, 1 - (sceneT - 4.4) * 2);
-            ctx.globalAlpha = fadeIn * fadeOut;
-
-            // Speed badge
-            ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
-            ctx.lineWidth = 2;
-            roundRect(ctx, 740, 160, 440, 44, 22, true, true);
-
-            ctx.fillStyle = '#38bdf8';
-            ctx.font = '700 17px "Plus Jakarta Sans"';
-            ctx.textAlign = 'center';
-            ctx.fillText('⚡ 300+ TOKENS/SEC • GROQ LPU POWERED', 960, 188);
-
-            // Glass Chat Card
-            ctx.fillStyle = 'rgba(12, 14, 22, 0.88)';
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
-            ctx.lineWidth = 2;
-            roundRect(ctx, 360, 240, 1200, 600, 24, true, true);
-
-            // Streamed Answer Heading
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '700 36px "Plus Jakarta Sans"';
-            ctx.textAlign = 'left';
-            ctx.fillText('Scaled Dot-Product Attention Derivation', 420, 310);
-
-            // LaTeX Formula Block Box
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
-            ctx.strokeStyle = 'rgba(129, 140, 248, 0.35)';
-            ctx.lineWidth = 1.5;
-            roundRect(ctx, 420, 350, 1080, 130, 16, true, true);
-
-            ctx.fillStyle = '#818cf8';
-            ctx.font = '700 32px "Fira Code", monospace';
-            ctx.textAlign = 'center';
-            ctx.fillText('Attention(Q, K, V) = softmax( (Q Kᵀ) / √dₖ ) V', 960, 425);
-
-            // Table Comparison
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-            roundRect(ctx, 420, 510, 1080, 180, 12, true, false);
-
-            ctx.fillStyle = '#e2e8f0';
-            ctx.font = '600 20px "Plus Jakarta Sans"';
-            ctx.textAlign = 'left';
-            ctx.fillText('Component        Dimensions          Function in Joint Attention', 450, 550);
-
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = '400 18px "Fira Code"';
-            ctx.fillText('Query (Q)        [seq_len, d_k]      Vector to be matched against keys', 450, 595);
-            ctx.fillText('Key (K)          [seq_len, d_k]      Indexed keys representing memory', 450, 635);
-            ctx.fillText('Value (V)        [seq_len, d_v]      Synthesized content weighted by score', 450, 675);
-
-            ctx.globalAlpha = 1.0;
-        }
-
-        // ==========================================
-        // SCENE 4: THE ANTI-HALLUCINATION CRITIC (12.5s - 16.5s)
-        // ==========================================
-        else if (sec >= 12.5 && sec < 16.5) {
-            const sceneT = sec - 12.5;
-            const fadeIn = Math.min(1, sceneT * 2);
-            const fadeOut = Math.max(0, 1 - (sceneT - 3.4) * 2);
-            ctx.globalAlpha = fadeIn * fadeOut;
-
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '800 52px "Plus Jakarta Sans"';
-            ctx.textAlign = 'center';
-            ctx.fillText('Independent Critic Fact-Checking', 960, 220);
-
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = '500 24px "Plus Jakarta Sans"';
-            ctx.fillText('Every synthesized assertion is cross-examined against source chunks.', 960, 270);
-
-            // Verification Card
-            ctx.fillStyle = 'rgba(10, 15, 25, 0.9)';
-            ctx.strokeStyle = '#10b981';
-            ctx.lineWidth = 3;
-            ctx.shadowColor = 'rgba(16, 185, 129, 0.35)';
-            ctx.shadowBlur = 40;
-            roundRect(ctx, 460, 340, 1000, 360, 24, true, true);
-            ctx.shadowBlur = 0;
-
-            // Confidence Badge
-            ctx.fillStyle = 'rgba(16, 185, 129, 0.18)';
-            ctx.strokeStyle = '#10b981';
-            ctx.lineWidth = 1.5;
-            roundRect(ctx, 510, 390, 260, 48, 24, true, true);
-
-            ctx.fillStyle = '#10b981';
-            ctx.font = '800 20px "Plus Jakarta Sans"';
-            ctx.textAlign = 'center';
-            ctx.fillText('✓ Confidence: 96.2%', 640, 422);
-
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '700 24px "Plus Jakarta Sans"';
-            ctx.textAlign = 'left';
-            ctx.fillText('Reasoning: Grounded in Reference Literature', 800, 422);
-
-            // Bullet assertions verified
-            ctx.fillStyle = '#d1d5db';
-            ctx.font = '500 20px "Plus Jakarta Sans"';
-            ctx.fillText('✓ Mathematical derivation strictly verified against Attention Is All You Need (p. 4)', 510, 490);
-            ctx.fillText('✓ Zero ungrounded claims or hallucinated parameter dimensions detected', 510, 535);
-            ctx.fillText('✓ Cosine similarity threshold passed on Qdrant Cloud cluster', 510, 580);
-
-            // Citations Pill Row
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-            roundRect(ctx, 510, 620, 440, 44, 12, true, false);
-            ctx.fillStyle = '#38bdf8';
-            ctx.font = '600 16px "Fira Code"';
-            ctx.fillText('📄 Vaswani_Attention_2017.pdf  p. 4', 530, 648);
-
-            ctx.globalAlpha = 1.0;
-        }
-
-        // ==========================================
-        // SCENE 5: LAUNCH CALL TO ACTION (16.5s - 20.0s)
-        // ==========================================
-        else if (sec >= 16.5 && sec <= 20.0) {
-            const sceneT = sec - 16.5;
-            const fadeIn = Math.min(1, sceneT * 2);
-            ctx.globalAlpha = fadeIn;
-
-            // Large Quantum Orbital Logo
-            drawQuantumLogo(960, 320, 85, sec);
-
-            // Brand
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '800 68px "Plus Jakarta Sans"';
-            ctx.textAlign = 'center';
-            ctx.shadowColor = 'rgba(56, 189, 248, 0.5)';
-            ctx.shadowBlur = 40;
-            ctx.fillText('Quorum AI', 960, 480);
-
-            // Tagline
-            ctx.fillStyle = '#d1d5db';
-            ctx.font = '600 26px "Plus Jakarta Sans"';
-            ctx.shadowBlur = 10;
-            ctx.fillText('Every answer, checked against your sources.', 960, 535);
-
-            // Glass Link Badge
-            ctx.fillStyle = 'rgba(15, 17, 26, 0.85)';
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
-            ctx.lineWidth = 2;
-            roundRect(ctx, 660, 585, 600, 64, 32, true, true);
-
-            ctx.fillStyle = '#38bdf8';
-            ctx.font = '700 22px "Fira Code"';
-            ctx.fillText('quorum-r6n0.onrender.com', 960, 625);
-
-            // Author Badge
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = '500 20px "Plus Jakarta Sans"';
-            ctx.fillText('Open Source • Built by @athrvmrjkr • github.com/athrvmrjkr/QuorumRAG', 960, 710);
-
-            ctx.globalAlpha = 1.0;
-        }
-    }
-
-    // Helper: Rounded Rectangle
+    // --- Rounded Rect Utility ---
     function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
         ctx.beginPath();
         ctx.moveTo(x + radius, y);
@@ -660,7 +484,449 @@
         if (stroke) ctx.stroke();
     }
 
-    // --- Animation & Recording Loop ---
+    // =========================================================================
+    // 45-SECOND CINEMATIC DIRECTOR (6 DETAILED CHAPTERS)
+    // =========================================================================
+    function renderFrame(sec) {
+        ctx.clearRect(0, 0, 1920, 1080);
+        drawAmbientBackground(sec);
+        triggerAudioCues(sec);
+
+        // -------------------------------------------------------------
+        // CHAPTER 1 (0.0s - 6.5s): THE PROBLEM — SILENT HALLUCINATIONS
+        // -------------------------------------------------------------
+        if (sec >= 0.0 && sec < 6.5) {
+            const t = sec;
+            const fadeIn = Math.min(1, t * 2.0);
+            const fadeOut = Math.max(0, 1 - (t - 5.6) * 1.8);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            // Problem Tag
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.16)';
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, 740, 220, 440, 46, 23, true, true);
+            ctx.fillStyle = '#f87171';
+            ctx.font = '700 17px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText('⚠ THE ENTERPRISE RAG BOTTLENECK', 960, 250);
+
+            // Headline
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 64px "Plus Jakarta Sans"';
+            ctx.shadowColor = 'rgba(0,0,0,0.85)';
+            ctx.shadowBlur = 24;
+            ctx.fillText('Most RAG Systems Hallucinate', 960, 360);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '500 30px "Plus Jakarta Sans"';
+            ctx.shadowBlur = 0;
+            ctx.fillText('When context is missing, standard models fabricate false formulas.', 960, 420);
+
+            // Mock Warning Split Card
+            drawMacWindow(460, 490, 1000, 340, "Standard RAG Output vs Reality");
+
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.08)';
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+            ctx.lineWidth = 1;
+            roundRect(ctx, 500, 560, 920, 120, 14, true, true);
+
+            ctx.fillStyle = '#f87171';
+            ctx.font = '600 20px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText('❌ Fabricated Mathematical Claim:', 530, 600);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '400 18px "Fira Code"';
+            ctx.fillText('"Variance of X is always bounded by E[X] * √N in high dimensions..."', 530, 640);
+
+            ctx.fillStyle = '#ef4444';
+            ctx.font = '700 18px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText('🚫 Fatal in Medical, Financial, and Scientific Research', 960, 750);
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // -------------------------------------------------------------
+        // CHAPTER 2 (6.5s - 13.5s): THE SOLUTION & FIRST LINE OF DEFENSE
+        // -------------------------------------------------------------
+        else if (sec >= 6.5 && sec < 13.5) {
+            const t = sec - 6.5;
+            const fadeIn = Math.min(1, t * 2.0);
+            const fadeOut = Math.max(0, 1 - (t - 6.2) * 2.0);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            // Brand Reveal
+            drawQuantumLogo(960, 180, 52, sec);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 54px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(56, 189, 248, 0.5)';
+            ctx.shadowBlur = 35;
+            ctx.fillText('Quorum AI — Self-Auditing RAG', 960, 275);
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '600 24px "Plus Jakarta Sans"';
+            ctx.fillText('Stage 1: Input Domain Guardrail Router', 960, 320);
+
+            // Window Terminal
+            drawMacWindow(420, 360, 1080, 460, "Domain Guardrail Intent Classification");
+
+            // User typing an off-topic question
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            roundRect(ctx, 470, 430, 980, 70, 14, true, false);
+
+            const promptText = "How do I bake a sourdough pizza with yeast?";
+            const typedLen = Math.min(promptText.length, Math.floor((t - 0.8) * 24));
+            const currentPrompt = promptText.substring(0, Math.max(0, typedLen));
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '600 16px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText('User Prompt:', 500, 460);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '500 20px "Plus Jakarta Sans"';
+            ctx.fillText(currentPrompt, 500, 485);
+
+            // Guardrail Decision Box
+            if (t >= 2.6) {
+                const decFade = Math.min(1, (t - 2.6) * 3);
+                ctx.globalAlpha = fadeIn * fadeOut * decFade;
+
+                ctx.fillStyle = 'rgba(245, 158, 11, 0.12)';
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 1.5;
+                roundRect(ctx, 470, 530, 980, 150, 14, true, true);
+
+                ctx.fillStyle = '#fbbf24';
+                ctx.font = '700 20px "Plus Jakarta Sans"';
+                ctx.fillText('🛡️ Domain Guardrail Triggered: Off-Topic Refusal (0.05s)', 500, 570);
+
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '400 16px "Plus Jakarta Sans"';
+                ctx.fillText('• Class: General Culinary (Blocked from Vector DB)', 500, 605);
+                ctx.fillText('• Reason: Saves 100% of GPU compute & prevents vector embedding drift.', 500, 635);
+
+                // Zero cost badge
+                ctx.fillStyle = 'rgba(16, 185, 129, 0.2)';
+                ctx.strokeStyle = '#10b981';
+                roundRect(ctx, 500, 700, 320, 40, 20, true, true);
+                ctx.fillStyle = '#10b981';
+                ctx.font = '700 15px "Plus Jakarta Sans"';
+                ctx.fillText('⚡ 0 Vector Cost • 0ms Delay', 525, 725);
+            }
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // -------------------------------------------------------------
+        // CHAPTER 3 (13.5s - 22.0s): DENSE VECTOR RETRIEVAL (QDRANT CLOUD)
+        // -------------------------------------------------------------
+        else if (sec >= 13.5 && sec < 22.0) {
+            const t = sec - 13.5;
+            const fadeIn = Math.min(1, t * 2.0);
+            const fadeOut = Math.max(0, 1 - (t - 7.5) * 2.0);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            ctx.fillStyle = 'rgba(6, 182, 212, 0.15)';
+            ctx.strokeStyle = 'rgba(6, 182, 212, 0.45)';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, 740, 140, 440, 42, 21, true, true);
+            ctx.fillStyle = '#22d3ee';
+            ctx.font = '700 16px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText('STAGE 2: DENSE CLOUD RETRIEVAL', 960, 167);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 52px "Plus Jakarta Sans"';
+            ctx.fillText('Scanning Qdrant Cloud HNSW Cluster', 960, 240);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '500 22px "Plus Jakarta Sans"';
+            ctx.fillText('BAAI/bge-small-en-v1.5 Bi-Encoder (384 Dimensions) • Sub-15ms Latency', 960, 285);
+
+            drawMacWindow(380, 330, 1160, 520, "Qdrant Cloud Vector Search (HNSW Cosine Metric)");
+
+            // Query Card
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            roundRect(ctx, 420, 395, 1080, 55, 12, true, false);
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '600 16px "Fira Code"';
+            ctx.textAlign = 'left';
+            ctx.fillText('QUERY: "Explain Scaled Dot-Product Attention and Variance math"', 445, 430);
+
+            // Vector Hit 1
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.08)';
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, 420, 470, 1080, 105, 14, true, true);
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '700 18px "Plus Jakarta Sans"';
+            ctx.fillText('📄 Vaswani et al. (Attention Is All You Need)', 450, 505);
+            ctx.fillStyle = '#10b981';
+            ctx.font = '700 16px "Fira Code"';
+            ctx.fillText('Cosine Similarity: 0.892 • Page: 4 • Chunk #12', 450, 535);
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = '400 15px "Plus Jakarta Sans"';
+            ctx.fillText('"We compute attention function on a set of queries simultaneously, packed into a matrix Q..."', 450, 560);
+
+            // Vector Hit 2
+            ctx.fillStyle = 'rgba(129, 140, 248, 0.08)';
+            ctx.strokeStyle = 'rgba(129, 140, 248, 0.35)';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, 420, 595, 1080, 105, 14, true, true);
+            ctx.fillStyle = '#818cf8';
+            ctx.font = '700 18px "Plus Jakarta Sans"';
+            ctx.fillText('📄 DeGroot & Schervish (Probability and Statistics)', 450, 630);
+            ctx.fillStyle = '#10b981';
+            ctx.font = '700 16px "Fira Code"';
+            ctx.fillText('Cosine Similarity: 0.841 • Page: 240 • Chunk #88', 450, 660);
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = '400 15px "Plus Jakarta Sans"';
+            ctx.fillText('"The variance of X, denoted by Var(X) or σ², is defined as the expected squared deviation..."', 450, 685);
+
+            // Search Metric Badge
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 1;
+            roundRect(ctx, 420, 725, 340, 36, 18, true, true);
+            ctx.fillStyle = '#10b981';
+            ctx.font = '700 15px "Plus Jakarta Sans"';
+            ctx.fillText('⚡ Vector Search Completed in 14.8ms', 445, 749);
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // -------------------------------------------------------------
+        // CHAPTER 4 (22.0s - 31.0s): THE LPU SYNTHESIZER (340+ TOK/S)
+        // -------------------------------------------------------------
+        else if (sec >= 22.0 && sec < 31.0) {
+            const t = sec - 22.0;
+            const fadeIn = Math.min(1, t * 2.0);
+            const fadeOut = Math.max(0, 1 - (t - 8.0) * 2.0);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            // Speedometer Pill
+            const liveTps = Math.min(348, Math.floor(t * 120 + 80));
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.18)';
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 720, 130, 480, 46, 23, true, true);
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '800 18px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText(`⚡ SPEED: ${liveTps} TOKENS/SEC • GROQ LPU POWERED`, 960, 160);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 50px "Plus Jakarta Sans"';
+            ctx.fillText('Real-Time Academic Synthesis with LaTeX', 960, 230);
+
+            drawMacWindow(360, 280, 1200, 600, "Synthesizer Stream: MathJax 3 Precision Formatting");
+
+            // Markdown LaTeX Block
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '700 32px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText('1. Scaled Dot-Product Attention Equation:', 420, 360);
+
+            // Formula Box
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            ctx.strokeStyle = 'rgba(129, 140, 248, 0.4)';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 420, 390, 1080, 120, 16, true, true);
+
+            ctx.fillStyle = '#818cf8';
+            ctx.font = '700 34px "Fira Code", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('Attention(Q, K, V) = softmax( (Q Kᵀ) / √dₖ ) V', 960, 465);
+
+            // Markdown Table with live typing feel
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '700 24px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText('2. Dimensional Analysis Matrix:', 420, 560);
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+            roundRect(ctx, 420, 580, 1080, 170, 12, true, false);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '700 18px "Plus Jakarta Sans"';
+            ctx.fillText('Symbol          Shape                 Mathematical Purpose', 450, 615);
+
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = '400 17px "Fira Code"';
+            ctx.fillText('Query (Q)       [batch, seq, d_k]     Active search state vector', 450, 655);
+            ctx.fillText('Key (K)         [batch, seq, d_k]     Reference database projections', 450, 690);
+            ctx.fillText('Value (V)       [batch, seq, d_v]     Normalized semantic payload', 450, 725);
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // -------------------------------------------------------------
+        // CHAPTER 5 (31.0s - 39.0s): THE ANTI-HALLUCINATION CRITIC
+        // -------------------------------------------------------------
+        else if (sec >= 31.0 && sec < 39.0) {
+            const t = sec - 31.0;
+            const fadeIn = Math.min(1, t * 2.0);
+            const fadeOut = Math.max(0, 1 - (t - 7.0) * 2.0);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.16)';
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 720, 130, 480, 44, 22, true, true);
+            ctx.fillStyle = '#10b981';
+            ctx.font = '800 17px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText('STAGE 4: ANTI-HALLUCINATION CRITIC', 960, 159);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 52px "Plus Jakarta Sans"';
+            ctx.fillText('Automated Self-Auditing & Fact-Checking', 960, 230);
+
+            drawMacWindow(400, 280, 1120, 580, "Critic Cross-Examination & Confidence Calculation");
+
+            // Radial Gauge Fill Animation
+            const gaugeProgress = Math.min(0.962, t * 0.4 + 0.2);
+
+            // Left: Circular Progress Ring
+            ctx.save();
+            ctx.translate(620, 450);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 16;
+            ctx.beginPath();
+            ctx.arc(0, 0, 90, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Animated Emerald Fill
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 16;
+            ctx.lineCap = 'round';
+            ctx.shadowColor = '#10b981';
+            ctx.shadowBlur = 25;
+            ctx.beginPath();
+            ctx.arc(0, 0, 90, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * gaugeProgress);
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 36px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.shadowBlur = 0;
+            ctx.fillText(`${(gaugeProgress * 100).toFixed(1)}%`, 0, 10);
+            ctx.fillStyle = '#10b981';
+            ctx.font = '700 14px "Plus Jakarta Sans"';
+            ctx.fillText('CONFIDENCE', 0, 36);
+            ctx.restore();
+
+            // Right: Verification Checklist
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '700 26px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText('Fact-Checking Verification Matrix', 780, 380);
+
+            const checkList = [
+                "Every equation verified against Vaswani et al. (p. 4)",
+                "Dimensional constraints mathematically validated",
+                "Confidence score (96.2%) exceeds 60% rejection gate",
+                "0 fabricated assumptions or citations detected"
+            ];
+
+            checkList.forEach((item, idx) => {
+                ctx.fillStyle = '#10b981';
+                ctx.font = '700 20px "Plus Jakarta Sans"';
+                ctx.fillText('✓', 780, 430 + idx * 45);
+
+                ctx.fillStyle = '#d1d5db';
+                ctx.font = '500 18px "Plus Jakarta Sans"';
+                ctx.fillText(item, 815, 430 + idx * 45);
+            });
+
+            // Citation Pills Bar
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.12)';
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, 450, 680, 1020, 80, 16, true, true);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '700 18px "Fira Code"';
+            ctx.fillText('Verified Citations Grounded in Knowledge Base:', 480, 715);
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = '500 16px "Fira Code"';
+            ctx.fillText('📄 Vaswani_2017.pdf [p. 4]   •   📄 DeGroot_Schervish.pdf [p. 240]', 480, 745);
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // -------------------------------------------------------------
+        // CHAPTER 6 (39.0s - 45.0s): PRODUCTION CLOUD ARCHITECTURE & OUTRO
+        // -------------------------------------------------------------
+        else if (sec >= 39.0 && sec <= 45.0) {
+            const t = sec - 39.0;
+            const fadeIn = Math.min(1, t * 2.0);
+            ctx.globalAlpha = fadeIn;
+
+            // Grand Quantum Orbital Logo
+            drawQuantumLogo(960, 240, 75, sec);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 66px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(56, 189, 248, 0.6)';
+            ctx.shadowBlur = 40;
+            ctx.fillText('Quorum AI', 960, 380);
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#d1d5db';
+            ctx.font = '600 26px "Plus Jakarta Sans"';
+            ctx.fillText('Zero-Hallucination Multi-Agent RAG Assistant', 960, 435);
+
+            // Production Engineering Badges Row
+            const badges = [
+                "🐳 Docker Python 3.11",
+                "⚡ Sub-180MB RAM Profile",
+                "📊 Pydantic Logfire OTel",
+                "🚀 Qdrant Cloud Cluster"
+            ];
+            const badgeW = 240;
+            badges.forEach((b, i) => {
+                const bx = 440 + i * 270;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                roundRect(ctx, bx - 120, 490, badgeW, 46, 23, true, true);
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '600 15px "Plus Jakarta Sans"';
+                ctx.fillText(b, bx, 519);
+            });
+
+            // Live Call to Action Card
+            ctx.fillStyle = 'rgba(15, 18, 28, 0.9)';
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2.5;
+            ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
+            ctx.shadowBlur = 35;
+            roundRect(ctx, 620, 580, 680, 75, 38, true, true);
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '800 24px "Fira Code"';
+            ctx.fillText('quorum-r6n0.onrender.com', 960, 627);
+
+            // Author Attribution
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '600 20px "Plus Jakarta Sans"';
+            ctx.fillText('Open Source Codebase • Built by @athrvmrjkr • github.com/athrvmrjkr/QuorumRAG', 960, 720);
+
+            ctx.globalAlpha = 1.0;
+        }
+    }
+
+    // =========================================================================
+    // PLAYBACK & 1080P RECORDING ENGINE
+    // =========================================================================
     function startPlayback(recordingMode) {
         if (isPlaying) return;
         isPlaying = true;
@@ -674,13 +940,13 @@
         recordBtn.disabled = true;
 
         if (isRecording) {
-            statusBadge.innerText = "🔴 Recording 1080p Video...";
+            statusBadge.innerText = "🔴 Recording 1080p Video (45s)...";
             statusBadge.style.color = "#ef4444";
             statusBadge.style.borderColor = "rgba(239, 68, 68, 0.4)";
             statusBadge.style.background = "rgba(239, 68, 68, 0.12)";
             startMediaRecorder();
         } else {
-            statusBadge.innerText = "▶ Playing Preview...";
+            statusBadge.innerText = "▶ Playing 45s Preview...";
             statusBadge.style.color = "#38bdf8";
         }
 
@@ -711,16 +977,15 @@
         if (isRecording && mediaRecorder && mediaRecorder.state !== "inactive") {
             mediaRecorder.stop();
         } else {
-            statusBadge.innerText = "✓ Preview Finished";
+            statusBadge.innerText = "✓ 45s Preview Completed";
             statusBadge.style.color = "#10b981";
         }
     }
 
     function startMediaRecorder() {
         recordedChunks = [];
-        const canvasStream = canvas.captureStream(30); // 30 FPS high quality
+        const canvasStream = canvas.captureStream(30);
 
-        // Combine canvas video stream with synthesized Web Audio track
         const combinedStream = new MediaStream([
             ...canvasStream.getVideoTracks(),
             ...(audioDest ? audioDest.stream.getAudioTracks() : [])
@@ -732,7 +997,7 @@
 
         mediaRecorder = new MediaRecorder(combinedStream, {
             mimeType: mimeType,
-            videoBitsPerSecond: 6000000 // 6 Mbps crisp 1080p
+            videoBitsPerSecond: 8000000 // 8 Mbps high-fidelity 1080p
         });
 
         mediaRecorder.ondataavailable = (e) => {
@@ -745,11 +1010,11 @@
             const a = document.createElement("a");
             a.href = url;
             const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
-            a.download = `quorum_launch_demo_${Date.now()}.${ext}`;
+            a.download = `quorum_ai_launch_demo_45s.${ext}`;
             a.click();
             URL.revokeObjectURL(url);
 
-            statusBadge.innerText = "✓ Video Downloaded!";
+            statusBadge.innerText = "✓ 45s Video Downloaded!";
             statusBadge.style.color = "#10b981";
             statusBadge.style.borderColor = "rgba(16, 185, 129, 0.4)";
             statusBadge.style.background = "rgba(16, 185, 129, 0.12)";
@@ -758,8 +1023,8 @@
         mediaRecorder.start();
     }
 
-    // Render initial poster frame immediately
-    renderFrame(17.5);
+    // Render initial poster frame
+    renderFrame(35.0);
 </script>
 
 </body>
