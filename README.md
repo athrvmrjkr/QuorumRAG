@@ -214,3 +214,4 @@ docker run -p 8000:7860 --env-file .env quorum-rag
 
 ## 📄 License
 This project is open-source under the [MIT License](LICENSE).
+

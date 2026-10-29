@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quorum AI — Launch Video Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #060709;
+            --primary-cyan: #38bdf8;
+            --primary-indigo: #818cf8;
+            --accent-purple: #c084fc;
+            --emerald-green: #10b981;
+            --coral-red: #ef4444;
+            --card-glass: rgba(14, 16, 24, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #030406;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .studio-container {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(15, 17, 26, 0.7);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            backdrop-filter: blur(16px);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .header-title span {
+            background: linear-gradient(135deg, #fff 30%, var(--primary-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-pill {
+            font-size: 0.82rem;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--primary-cyan);
+            font-weight: 600;
+        }
+
+        .viewport-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.15);
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls-card {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 16px 24px;
+            background: rgba(15, 17, 26, 0.85);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+        }
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            color: #040814;
+            box-shadow: 0 4px 18px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(56, 189, 248, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-glass);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .progress-bar-wrap {
+            flex: 1;
+            min-width: 240px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-indigo), var(--accent-purple));
+            transition: width 0.05s linear;
+        }
+
+        .time-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            color: #94a3b8;
+            min-width: 65px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="studio-container">
+    <div class="header-bar">
+        <div class="header-title">
+            <svg width="22" height="22" viewBox="0 0 32 32">
+                <circle cx="16" cy="16" r="11" stroke="#38bdf8" stroke-width="2" stroke-dasharray="22 6" fill="none"/>
+                <circle cx="16" cy="16" r="6" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="10 5" fill="none"/>
+                <circle cx="16" cy="16" r="2.8" fill="#ffffff"/>
+            </svg>
+            <span>Quorum AI — 100% Free Launch Video Studio</span>
+        </div>
+        <div class="status-pill" id="statusBadge">Ready to Export</div>
+    </div>
+
+    <div class="viewport-wrapper">
+        <canvas id="videoCanvas" width="1920" height="1080"></canvas>
+    </div>
+
+    <div class="controls-card">
+        <div class="action-group">
+            <button class="btn btn-secondary" id="previewBtn" onclick="startPlayback(false)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Preview (20s)</span>
+            </button>
+            <button class="btn btn-primary" id="recordBtn" onclick="startPlayback(true)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
+                <span>Record & Download MP4 / WebM</span>
+            </button>
+        </div>
+
+        <div class="progress-bar-wrap">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="time-label" id="timeLabel">0.0s / 20.0s</div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById("videoCanvas");
+    const ctx = canvas.getContext("2d");
+    const progressFill = document.getElementById("progressFill");
+    const timeLabel = document.getElementById("timeLabel");
+    const statusBadge = document.getElementById("statusBadge");
+    const previewBtn = document.getElementById("previewBtn");
+    const recordBtn = document.getElementById("recordBtn");
+
+    const TOTAL_DURATION = 20.0; // Seconds
+    let startTime = null;
+    let isPlaying = false;
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let audioCtx = null;
+    let audioDest = null;
+
+    // --- Web Audio Synthesizer for Synchronized Music & SFX ---
+    function initAudio() {
+        if (!audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            audioDest = audioCtx.createMediaStreamDestination();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playTone(freq, type = 'sine', duration = 0.2, gainVal = 0.15) {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        if (audioDest) gain.connect(audioDest);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playChord(chordFreqs, duration = 1.8, gainVal = 0.1) {
+        chordFreqs.forEach(f => playTone(f, 'sine', duration, gainVal));
+    }
+
+    let lastSfxSec = -1;
+    function triggerAudioCues(sec) {
+        const curSecInt = Math.floor(sec * 4);
+        if (curSecInt === lastSfxSec) return;
+        lastSfxSec = curSecInt;
+
+        // Sub bass drop on Scene 1 start
+        if (Math.abs(sec - 0.2) < 0.1) playTone(55, 'triangle', 1.2, 0.4);
+        // Glitch sweep
+        if (Math.abs(sec - 2.2) < 0.1) playTone(440, 'sawtooth', 0.25, 0.15);
+        // Scene 2 reveal chime
+        if (Math.abs(sec - 3.6) < 0.1) playChord([220, 277.18, 329.63, 440], 2.0, 0.18);
+        // Typing ticks in Scene 2 & 3
+        if (sec >= 4.2 && sec <= 6.8 && (curSecInt % 2 === 0)) playTone(1200 + Math.random() * 400, 'square', 0.04, 0.04);
+        // Scene 3 stream explosion
+        if (Math.abs(sec - 7.5) < 0.1) playChord([261.63, 329.63, 392, 523.25], 2.2, 0.2);
+        if (sec >= 7.8 && sec <= 11.5 && (curSecInt % 1 === 0)) playTone(800 + (sec * 60) % 600, 'sine', 0.06, 0.05);
+        // Scene 4 verification green chime
+        if (Math.abs(sec - 12.6) < 0.1) playChord([392, 493.88, 587.33, 783.99], 2.5, 0.25);
+        // Scene 5 climax swell
+        if (Math.abs(sec - 16.5) < 0.1) {
+            playChord([130.81, 196.00, 261.63, 392.00, 523.25], 3.5, 0.3);
+            playTone(45, 'triangle', 2.5, 0.45);
+        }
+    }
+
+    // --- Starfield & Ambient Particle Simulation ---
+    const stars = Array.from({ length: 90 }, () => ({
+        x: Math.random() * 1920,
+        y: Math.random() * 1080,
+        size: Math.random() * 2.2 + 0.5,
+        speed: Math.random() * 0.4 + 0.1,
+        opacity: Math.random() * 0.7 + 0.3
+    }));
+
+    function drawAmbientBackground(t) {
+        // Deep Obsidian Radial Glow
+        const bgGrad = ctx.createRadialGradient(960, 540, 100, 960, 540, 1100);
+        bgGrad.addColorStop(0, '#0d1322');
+        bgGrad.addColorStop(0.5, '#070a12');
+        bgGrad.addColorStop(1, '#030407');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 1920, 1080);
+
+        // Moving background stars
+        stars.forEach(s => {
+            s.y -= s.speed;
+            if (s.y < 0) s.y = 1080;
+            ctx.fillStyle = `rgba(255, 255, 255, ${s.opacity * (0.6 + 0.4 * Math.sin(t * 3 + s.x))})`;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        // Ambient Nebula Wave
+        const nGrad = ctx.createRadialGradient(
+            960 + Math.sin(t * 0.5) * 200, 
+            400 + Math.cos(t * 0.4) * 150, 
+            50, 
+            960, 540, 700
+        );
+        nGrad.addColorStop(0, 'rgba(56, 189, 248, 0.12)');
+        nGrad.addColorStop(0.5, 'rgba(129, 140, 248, 0.06)');
+        nGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = nGrad;
+        ctx.fillRect(0, 0, 1920, 1080);
+    }
+
+    function drawQuantumLogo(cx, cy, radius, t) {
+        ctx.save();
+        ctx.translate(cx, cy);
+
+        // Outer Ring
+        ctx.save();
+        ctx.rotate(t * 0.8);
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 4;
+        ctx.setLineDash([40, 18]);
+        ctx.shadowColor = '#38bdf8';
+        ctx.shadowBlur = 24;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+
+        // Inner Counter-Ring
+        ctx.save();
+        ctx.rotate(-t * 1.4);
+        ctx.strokeStyle = '#818cf8';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([25, 15]);
+        ctx.shadowColor = '#818cf8';
+        ctx.shadowBlur = 18;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 0.62, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+
+        // Center Core
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#ffffff';
+        ctx.shadowBlur = 30;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 0.24, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    // --- Main Scene Director ---
+    function renderFrame(sec) {
+        ctx.clearRect(0, 0, 1920, 1080);
+        drawAmbientBackground(sec);
+        triggerAudioCues(sec);
+
+        // ==========================================
+        // SCENE 1: THE PROBLEM (0.0s - 3.5s)
+        // ==========================================
+        if (sec >= 0 && sec < 3.5) {
+            const sceneT = sec;
+            const fadeIn = Math.min(1, sceneT * 2);
+            const fadeOut = Math.max(0, 1 - (sceneT - 2.8) * 2);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            // Warning pill
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.5)';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 760, 360, 400, 48, 24, true, true);
+
+            ctx.fillStyle = '#f87171';
+            ctx.font = '700 18px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText('⚠ THE RAG PROBLEM', 960, 391);
+
+            // Bold Headline
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 64px "Plus Jakarta Sans"';
+            ctx.shadowColor = 'rgba(0,0,0,0.8)';
+            ctx.shadowBlur = 20;
+            ctx.fillText('Most RAG Systems Hallucinate', 960, 490);
+
+            // Subtitle
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '500 32px "Plus Jakarta Sans"';
+            ctx.fillText('...with 100% false confidence.', 960, 555);
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // ==========================================
+        // SCENE 2: THE SOLUTION (3.5s - 7.5s)
+        // ==========================================
+        else if (sec >= 3.5 && sec < 7.5) {
+            const sceneT = sec - 3.5;
+            const fadeIn = Math.min(1, sceneT * 2);
+            const fadeOut = Math.max(0, 1 - (sceneT - 3.4) * 2);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            // Logo spinning
+            drawQuantumLogo(960, 290, 65, sec);
+
+            // Title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 62px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
+            ctx.shadowBlur = 35;
+            ctx.fillText('Meet Quorum AI', 960, 410);
+
+            // Subtitle
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '600 28px "Plus Jakarta Sans"';
+            ctx.shadowBlur = 15;
+            ctx.fillText('Self-Auditing Multi-Agent RAG Assistant', 960, 460);
+
+            // Mock Search Bar Input
+            ctx.fillStyle = 'rgba(15, 17, 26, 0.85)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 480, 530, 960, 80, 20, true, true);
+
+            // Simulated Typing Prompt
+            const fullPrompt = "Explain Self-Attention with exact mathematical formulas...";
+            const charsToShow = Math.min(fullPrompt.length, Math.floor((sceneT - 0.6) * 22));
+            const typedText = fullPrompt.substring(0, Math.max(0, charsToShow));
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '500 24px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText(typedText, 520, 578);
+
+            // Blinking cursor
+            if (Math.floor(sec * 3) % 2 === 0) {
+                const textWidth = ctx.measureText(typedText).width;
+                ctx.fillStyle = '#38bdf8';
+                ctx.fillRect(524 + textWidth, 555, 3, 30);
+            }
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // ==========================================
+        // SCENE 3: LPU SPEED & MATH (7.5s - 12.5s)
+        // ==========================================
+        else if (sec >= 7.5 && sec < 12.5) {
+            const sceneT = sec - 7.5;
+            const fadeIn = Math.min(1, sceneT * 2);
+            const fadeOut = Math.max(0, 1 - (sceneT - 4.4) * 2);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            // Speed badge
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 740, 160, 440, 44, 22, true, true);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '700 17px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText('⚡ 300+ TOKENS/SEC • GROQ LPU POWERED', 960, 188);
+
+            // Glass Chat Card
+            ctx.fillStyle = 'rgba(12, 14, 22, 0.88)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 360, 240, 1200, 600, 24, true, true);
+
+            // Streamed Answer Heading
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '700 36px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText('Scaled Dot-Product Attention Derivation', 420, 310);
+
+            // LaTeX Formula Block Box
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+            ctx.strokeStyle = 'rgba(129, 140, 248, 0.35)';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, 420, 350, 1080, 130, 16, true, true);
+
+            ctx.fillStyle = '#818cf8';
+            ctx.font = '700 32px "Fira Code", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('Attention(Q, K, V) = softmax( (Q Kᵀ) / √dₖ ) V', 960, 425);
+
+            // Table Comparison
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            roundRect(ctx, 420, 510, 1080, 180, 12, true, false);
+
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = '600 20px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText('Component        Dimensions          Function in Joint Attention', 450, 550);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '400 18px "Fira Code"';
+            ctx.fillText('Query (Q)        [seq_len, d_k]      Vector to be matched against keys', 450, 595);
+            ctx.fillText('Key (K)          [seq_len, d_k]      Indexed keys representing memory', 450, 635);
+            ctx.fillText('Value (V)        [seq_len, d_v]      Synthesized content weighted by score', 450, 675);
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // ==========================================
+        // SCENE 4: THE ANTI-HALLUCINATION CRITIC (12.5s - 16.5s)
+        // ==========================================
+        else if (sec >= 12.5 && sec < 16.5) {
+            const sceneT = sec - 12.5;
+            const fadeIn = Math.min(1, sceneT * 2);
+            const fadeOut = Math.max(0, 1 - (sceneT - 3.4) * 2);
+            ctx.globalAlpha = fadeIn * fadeOut;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 52px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText('Independent Critic Fact-Checking', 960, 220);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '500 24px "Plus Jakarta Sans"';
+            ctx.fillText('Every synthesized assertion is cross-examined against source chunks.', 960, 270);
+
+            // Verification Card
+            ctx.fillStyle = 'rgba(10, 15, 25, 0.9)';
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 3;
+            ctx.shadowColor = 'rgba(16, 185, 129, 0.35)';
+            ctx.shadowBlur = 40;
+            roundRect(ctx, 460, 340, 1000, 360, 24, true, true);
+            ctx.shadowBlur = 0;
+
+            // Confidence Badge
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.18)';
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, 510, 390, 260, 48, 24, true, true);
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = '800 20px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.fillText('✓ Confidence: 96.2%', 640, 422);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '700 24px "Plus Jakarta Sans"';
+            ctx.textAlign = 'left';
+            ctx.fillText('Reasoning: Grounded in Reference Literature', 800, 422);
+
+            // Bullet assertions verified
+            ctx.fillStyle = '#d1d5db';
+            ctx.font = '500 20px "Plus Jakarta Sans"';
+            ctx.fillText('✓ Mathematical derivation strictly verified against Attention Is All You Need (p. 4)', 510, 490);
+            ctx.fillText('✓ Zero ungrounded claims or hallucinated parameter dimensions detected', 510, 535);
+            ctx.fillText('✓ Cosine similarity threshold passed on Qdrant Cloud cluster', 510, 580);
+
+            // Citations Pill Row
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+            roundRect(ctx, 510, 620, 440, 44, 12, true, false);
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '600 16px "Fira Code"';
+            ctx.fillText('📄 Vaswani_Attention_2017.pdf  p. 4', 530, 648);
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        // ==========================================
+        // SCENE 5: LAUNCH CALL TO ACTION (16.5s - 20.0s)
+        // ==========================================
+        else if (sec >= 16.5 && sec <= 20.0) {
+            const sceneT = sec - 16.5;
+            const fadeIn = Math.min(1, sceneT * 2);
+            ctx.globalAlpha = fadeIn;
+
+            // Large Quantum Orbital Logo
+            drawQuantumLogo(960, 320, 85, sec);
+
+            // Brand
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 68px "Plus Jakarta Sans"';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(56, 189, 248, 0.5)';
+            ctx.shadowBlur = 40;
+            ctx.fillText('Quorum AI', 960, 480);
+
+            // Tagline
+            ctx.fillStyle = '#d1d5db';
+            ctx.font = '600 26px "Plus Jakarta Sans"';
+            ctx.shadowBlur = 10;
+            ctx.fillText('Every answer, checked against your sources.', 960, 535);
+
+            // Glass Link Badge
+            ctx.fillStyle = 'rgba(15, 17, 26, 0.85)';
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+            ctx.lineWidth = 2;
+            roundRect(ctx, 660, 585, 600, 64, 32, true, true);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '700 22px "Fira Code"';
+            ctx.fillText('quorum-r6n0.onrender.com', 960, 625);
+
+            // Author Badge
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '500 20px "Plus Jakarta Sans"';
+            ctx.fillText('Open Source • Built by @athrvmrjkr • github.com/athrvmrjkr/QuorumRAG', 960, 710);
+
+            ctx.globalAlpha = 1.0;
+        }
+    }
+
+    // Helper: Rounded Rectangle
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+        if (fill) ctx.fill();
+        if (stroke) ctx.stroke();
+    }
+
+    // --- Animation & Recording Loop ---
+    function startPlayback(recordingMode) {
+        if (isPlaying) return;
+        isPlaying = true;
+        isRecording = recordingMode;
+        startTime = performance.now();
+        lastSfxSec = -1;
+
+        initAudio();
+
+        previewBtn.disabled = true;
+        recordBtn.disabled = true;
+
+        if (isRecording) {
+            statusBadge.innerText = "🔴 Recording 1080p Video...";
+            statusBadge.style.color = "#ef4444";
+            statusBadge.style.borderColor = "rgba(239, 68, 68, 0.4)";
+            statusBadge.style.background = "rgba(239, 68, 68, 0.12)";
+            startMediaRecorder();
+        } else {
+            statusBadge.innerText = "▶ Playing Preview...";
+            statusBadge.style.color = "#38bdf8";
+        }
+
+        requestAnimationFrame(tick);
+    }
+
+    function tick(now) {
+        const elapsed = (now - startTime) / 1000;
+        const progress = Math.min(1, elapsed / TOTAL_DURATION);
+
+        progressFill.style.width = (progress * 100) + '%';
+        timeLabel.innerText = `${elapsed.toFixed(1)}s / ${TOTAL_DURATION.toFixed(1)}s`;
+
+        renderFrame(elapsed);
+
+        if (elapsed < TOTAL_DURATION) {
+            requestAnimationFrame(tick);
+        } else {
+            finishPlayback();
+        }
+    }
+
+    function finishPlayback() {
+        isPlaying = false;
+        previewBtn.disabled = false;
+        recordBtn.disabled = false;
+
+        if (isRecording && mediaRecorder && mediaRecorder.state !== "inactive") {
+            mediaRecorder.stop();
+        } else {
+            statusBadge.innerText = "✓ Preview Finished";
+            statusBadge.style.color = "#10b981";
+        }
+    }
+
+    function startMediaRecorder() {
+        recordedChunks = [];
+        const canvasStream = canvas.captureStream(30); // 30 FPS high quality
+
+        // Combine canvas video stream with synthesized Web Audio track
+        const combinedStream = new MediaStream([
+            ...canvasStream.getVideoTracks(),
+            ...(audioDest ? audioDest.stream.getAudioTracks() : [])
+        ]);
+
+        const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')
+            ? 'video/webm;codecs=vp9,opus'
+            : (MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' : 'video/webm');
+
+        mediaRecorder = new MediaRecorder(combinedStream, {
+            mimeType: mimeType,
+            videoBitsPerSecond: 6000000 // 6 Mbps crisp 1080p
+        });
+
+        mediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
+            a.download = `quorum_launch_demo_${Date.now()}.${ext}`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            statusBadge.innerText = "✓ Video Downloaded!";
+            statusBadge.style.color = "#10b981";
+            statusBadge.style.borderColor = "rgba(16, 185, 129, 0.4)";
+            statusBadge.style.background = "rgba(16, 185, 129, 0.12)";
+        };
+
+        mediaRecorder.start();
+    }
+
+    // Render initial poster frame immediately
+    renderFrame(17.5);
+</script>
+
+</body>
+</html>

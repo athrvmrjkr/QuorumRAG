@@ -1,0 +1,34 @@
+# Quorum AI Launch Video Share Copy
+
+### 🚀 Twitter / X Post
+Most RAG pipelines hallucinate with 100% confidence.
+
+I got tired of AI making up mathematical formulas, so I built Quorum AI:
+A production multi-agent research assistant that fact-checks its own answers against textbook sources in real time.
+
+✨ 300+ tokens/sec on Groq LPUs
+🛡️ Anti-hallucination critic agent with 60% confidence gate
+📐 Protected MathJax 3 LaTeX engine (zero markdown italics bugs)
+⚡ Dense vector search on Qdrant Cloud (<15ms)
+🐳 Hardened under a 512MB RAM Linux container ceiling
+
+Live Demo: https://quorum-r6n0.onrender.com
+GitHub: https://github.com/athrvmrjkr/QuorumRAG
+
+Feedback welcome! 👇
+
+---
+
+### 💼 LinkedIn Post
+Excited to share Quorum AI, an enterprise-grade multi-agent RAG research platform built to solve the hallucination and latency bottlenecks common in production retrieval systems.
+
+Instead of relying on heavy frameworks like LangChain, Quorum uses a lightweight custom Python orchestrator coordinating four specialized agents:
+1. Input Domain Guardrail (blocks off-topic compute waste)
+2. Cloud Vector Retrieval (Qdrant HNSW cosine index)
+3. Academic Synthesizer (streaming LaTeX derivations at 300+ tok/s)
+4. Anti-Hallucination Critic (verifies every claim against source pages with automated threshold overrides)
+
+Check out the live deployment and star the repository:
+🌐 Live Application: https://quorum-r6n0.onrender.com
+💻 Codebase: https://github.com/athrvmrjkr/QuorumRAG
+
