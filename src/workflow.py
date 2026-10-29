@@ -4,7 +4,7 @@ import logfire
 from rich.console import Console
 
 from src.ingestion import extract_and_chunk_pdf
-from src.vector_store import VectorStore
+from src.vector_store import VectorStore, trim_memory
 from src.agents import RAGAgents, VerificationResult
 
 console = Console()
@@ -139,6 +139,7 @@ class RAGWorkflow:
             else:
                 final_answer = verification.final_verified_answer
 
+            trim_memory()
             return {
                 "answer": final_answer,
                 "confidence": round(verification.confidence_score * 100, 1),
@@ -241,6 +242,8 @@ class RAGWorkflow:
                 "type": "empty",
                 "message": f"Service temporarily busy ({str(e)}). Please try your query again."
             }) + "\n"
+        finally:
+            trim_memory()
 
     def close(self):
         self.vector_store.close()

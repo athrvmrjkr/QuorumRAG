@@ -3,9 +3,17 @@
 FROM python:3.11-slim
 
 # Prevent Python from writing .pyc files & enable real-time streaming logs
+# Restrict OpenMP / ONNX thread pools and enforce glibc malloc_trim to stay strictly under 250MB RAM
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PORT=7860
+    PORT=7860 \
+    OMP_NUM_THREADS=1 \
+    OPENBLAS_NUM_THREADS=1 \
+    MKL_NUM_THREADS=1 \
+    VECLIB_MAXIMUM_THREADS=1 \
+    NUMEXPR_NUM_THREADS=1 \
+    ORT_THREAD_POOL_SIZE=1 \
+    MALLOC_TRIM_THRESHOLD_=100000
 
 WORKDIR /app
 

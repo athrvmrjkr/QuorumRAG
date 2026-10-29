@@ -17,16 +17,34 @@ from src.config import (
 
 console = Console()
 
+def trim_memory():
+    """Force Python GC and ask Linux glibc to release heap pages back to OS."""
+    import gc
+    gc.collect()
+    try:
+        import ctypes
+        ctypes.CDLL('libc.so.6').malloc_trim(0)
+    except Exception:
+        pass
+
 class VectorStore:
     def __init__(self, collection_name: str = QDRANT_COLLECTION):
         self.collection_name = collection_name
-        self.embedding_model = TextEmbedding(model_name="BAAI/bge-small-en-v1.5")
+        self.embedding_model = TextEmbedding(
+            model_name="BAAI/bge-small-en-v1.5",
+            threads=1,
+            lazy_load=True
+        )
         self.enable_reranker = ENABLE_CROSS_ENCODER
         self.reranker = None
         if self.enable_reranker:
             try:
-                self.reranker = TextCrossEncoder(model_name="Xenova/ms-marco-MiniLM-L-6-v2")
-                console.print("[dim]Cross-Encoder Re-Ranker initialized.[/dim]")
+                self.reranker = TextCrossEncoder(
+                    model_name="Xenova/ms-marco-MiniLM-L-6-v2",
+                    threads=1,
+                    lazy_load=True
+                )
+                console.print("[dim]Cross-Encoder Re-Ranker initialized (1 thread).[/dim]")
             except Exception as e:
                 console.print(f"[yellow]Could not initialize Cross-Encoder: {e}. Using vector search scores.[/yellow]")
                 self.reranker = None
@@ -189,12 +207,13 @@ class VectorStore:
                 # Sort by reranker score descending
                 candidates.sort(key=lambda x: x["score"], reverse=True)
                 top_results = candidates[:top_k]
-                gc.collect()
+                trim_memory()
                 return top_results
             except Exception as e:
                 console.print(f"[yellow]Re-ranking fallback to vector score: {e}[/yellow]")
                 for c in candidates:
                     c["score"] = c["vector_score"]
+                trim_memory()
                 return candidates[:top_k]
 
     def close(self):
