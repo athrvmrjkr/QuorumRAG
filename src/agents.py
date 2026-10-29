@@ -44,25 +44,33 @@ class RAGAgents:
         ollama_model: str = OLLAMA_MODEL
     ):
         self.api_key = api_key
-        # Enforce valid Groq models to prevent invalid placeholder crashes (e.g. gpt-oss-20b)
-        valid_models = {
-            "llama-3.3-70b-versatile",
-            "llama-3.1-70b-versatile",
-            "llama-3.1-8b-instant",
-            "mixtral-8x7b-32768",
-            "gemma2-9b-it"
-        }
-        if model not in valid_models and not str(model).startswith("llama-3"):
-            self.model = "llama-3.3-70b-versatile"
-        else:
-            self.model = model
+        self.model = model
         self.ollama_url = ollama_url
         self.ollama_model = ollama_model
         
         self.groq_client = None
+        self.available_models = []
         if self.api_key and self.api_key != "your_actual_groq_api_key_here":
             try:
                 self.groq_client = Groq(api_key=self.api_key)
+                try:
+                    self.available_models = [
+                        m.id for m in self.groq_client.models.list().data 
+                        if not m.id.startswith("whisper") and not "guard" in m.id
+                    ]
+                    if self.available_models and self.model not in self.available_models:
+                        preferred = [
+                            "openai/gpt-oss-20b",
+                            "openai/gpt-oss-120b",
+                            "qwen/qwen3.8-27b",
+                            "llama-3.3-70b-versatile",
+                            "llama-3.1-8b-instant"
+                        ]
+                        chosen = next((p for p in preferred if p in self.available_models), self.available_models[0])
+                        console.print(f"[cyan]Requested model '{self.model}' not present on key. Auto-selected '{chosen}'[/cyan]")
+                        self.model = chosen
+                except Exception:
+                    pass
             except Exception as e:
                 console.print(f"[yellow]Could not initialize Groq client: {e}[/yellow]")
 
@@ -114,14 +122,16 @@ class RAGAgents:
                     except Exception:
                         pass
 
-                # Automatic fallback to fast LLaMA 3.1 8B on Groq
-                try:
-                    fallback_kwargs = dict(kwargs)
-                    fallback_kwargs["model"] = "llama-3.1-8b-instant"
-                    resp = self.groq_client.chat.completions.create(**fallback_kwargs)
-                    return resp.choices[0].message.content.strip()
-                except Exception:
-                    pass
+                # Automatic fallback to another available model on this key if primary hits rate limit or error
+                for alt_model in self.available_models:
+                    if alt_model != self.model:
+                        try:
+                            fallback_kwargs = dict(kwargs)
+                            fallback_kwargs["model"] = alt_model
+                            resp = self.groq_client.chat.completions.create(**fallback_kwargs)
+                            return resp.choices[0].message.content.strip()
+                        except Exception:
+                            continue
 
                 console.print(f"[yellow]Groq request failed ({e}). Checking local Ollama...[/yellow]")
 
@@ -158,22 +168,24 @@ class RAGAgents:
                         yield content
                 return
             except Exception as e:
-                console.print(f"[yellow]Groq stream failed ({e}). Falling back to LLaMA 8B instant...[/yellow]")
-                try:
-                    response = self.groq_client.chat.completions.create(
-                        model="llama-3.1-8b-instant",
-                        messages=messages,
-                        temperature=0.1,
-                        max_tokens=4096,
-                        stream=True
-                    )
-                    for chunk in response:
-                        content = chunk.choices[0].delta.content
-                        if content:
-                            yield content
-                    return
-                except Exception:
-                    pass
+                console.print(f"[yellow]Groq stream failed with {self.model} ({e}). Retrying with alternate model...[/yellow]")
+                for alt_model in self.available_models:
+                    if alt_model != self.model:
+                        try:
+                            response = self.groq_client.chat.completions.create(
+                                model=alt_model,
+                                messages=messages,
+                                temperature=0.1,
+                                max_tokens=4096,
+                                stream=True
+                            )
+                            for chunk in response:
+                                content = chunk.choices[0].delta.content
+                                if content:
+                                    yield content
+                            return
+                        except Exception:
+                            continue
 
         # Fallback to streaming via Ollama if available
         try:

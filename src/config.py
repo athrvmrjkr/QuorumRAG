@@ -17,7 +17,7 @@ load_dotenv(dotenv_path=ENV_FILE)
 
 # Configuration values
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile").strip()
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b").strip()
 
 # Observability with Pydantic Logfire
 LOGFIRE_TOKEN = os.getenv("LOGFIRE_TOKEN", "").strip()
