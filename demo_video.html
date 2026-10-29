@@ -831,7 +831,7 @@
                 "Every equation verified against Vaswani et al. (p. 4)",
                 "Dimensional constraints mathematically validated",
                 "Confidence score (96.2%) exceeds 60% rejection gate",
-                "0 fabricated assumptions or citations detected"
+                "0 ungrounded claims detected in verified output"
             ];
 
             checkList.forEach((item, idx) => {
@@ -872,34 +872,40 @@
             drawQuantumLogo(960, 240, 75, sec);
 
             ctx.fillStyle = '#ffffff';
-            ctx.font = '800 66px "Plus Jakarta Sans"';
+            ctx.font = '800 64px "Plus Jakarta Sans"';
             ctx.textAlign = 'center';
             ctx.shadowColor = 'rgba(56, 189, 248, 0.6)';
             ctx.shadowBlur = 40;
-            ctx.fillText('Quorum AI', 960, 380);
+            ctx.fillText('Quorum AI', 960, 375);
             ctx.shadowBlur = 0;
 
-            ctx.fillStyle = '#d1d5db';
-            ctx.font = '600 26px "Plus Jakarta Sans"';
-            ctx.fillText('Zero-Hallucination Multi-Agent RAG Assistant', 960, 435);
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = '700 25px "Plus Jakarta Sans"';
+            ctx.fillText('Self-Auditing Multi-Agent RAG Assistant', 960, 425);
 
-            // Production Engineering Badges Row
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '600 17px "Plus Jakarta Sans"';
+            ctx.fillText('Dual-Agent Verification • 96.2% Grounded Claims • Zero Unsupported Assertions', 960, 460);
+
+            // Production Engineering Badges Row (5 Balanced Badges)
             const badges = [
                 "🐳 Docker Python 3.11",
                 "⚡ Sub-180MB RAM Profile",
+                "🧠 Dual-Agent Critic Audit",
                 "📊 Pydantic Logfire OTel",
-                "🚀 Qdrant Cloud Cluster"
+                "🚀 Qdrant Cloud HNSW"
             ];
-            const badgeW = 240;
+            const badgeW = 230;
+            const spacing = 260;
             badges.forEach((b, i) => {
-                const bx = 440 + i * 270;
+                const bx = 960 + (i - 2) * spacing;
                 ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
                 ctx.lineWidth = 1;
-                roundRect(ctx, bx - 120, 490, badgeW, 46, 23, true, true);
+                roundRect(ctx, bx - badgeW / 2, 498, badgeW, 44, 22, true, true);
                 ctx.fillStyle = '#e2e8f0';
                 ctx.font = '600 15px "Plus Jakarta Sans"';
-                ctx.fillText(b, bx, 519);
+                ctx.fillText(b, bx, 526);
             });
 
             // Live Call to Action Card
@@ -991,9 +997,23 @@
             ...(audioDest ? audioDest.stream.getAudioTracks() : [])
         ]);
 
-        const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')
-            ? 'video/webm;codecs=vp9,opus'
-            : (MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' : 'video/webm');
+        // Detect MP4 native browser capability (Chrome 124+ / Edge) or fallback to WebM
+        let mimeType = 'video/webm;codecs=vp9,opus';
+        let fileExt = 'webm';
+
+        if (MediaRecorder.isTypeSupported('video/mp4;codecs=avc1,mp4a.40.2')) {
+            mimeType = 'video/mp4;codecs=avc1,mp4a.40.2';
+            fileExt = 'mp4';
+        } else if (MediaRecorder.isTypeSupported('video/mp4')) {
+            mimeType = 'video/mp4';
+            fileExt = 'mp4';
+        } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
+            mimeType = 'video/webm;codecs=vp9,opus';
+            fileExt = 'webm';
+        } else if (MediaRecorder.isTypeSupported('video/webm')) {
+            mimeType = 'video/webm';
+            fileExt = 'webm';
+        }
 
         mediaRecorder = new MediaRecorder(combinedStream, {
             mimeType: mimeType,
@@ -1009,12 +1029,11 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
-            a.download = `quorum_ai_launch_demo_45s.${ext}`;
+            a.download = `quorum_ai_launch_demo_45s.${fileExt}`;
             a.click();
             URL.revokeObjectURL(url);
 
-            statusBadge.innerText = "✓ 45s Video Downloaded!";
+            statusBadge.innerText = `✓ 45s Video Downloaded as .${fileExt.toUpperCase()}!`;
             statusBadge.style.color = "#10b981";
             statusBadge.style.borderColor = "rgba(16, 185, 129, 0.4)";
             statusBadge.style.background = "rgba(16, 185, 129, 0.12)";
